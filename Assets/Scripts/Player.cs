@@ -73,7 +73,9 @@ public class Player : MonoBehaviour
         animator.SetTrigger("Attack");
 
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
-        System.Array.ForEach(enemies, (enemy) => Debug.Log("Colpito"));
+        System.Array.ForEach(enemies, enemy => {
+            enemy.GetComponent<Enemy>().TakeHit(10);
+        });
 
         StartCoroutine(Cooldown());
     }
@@ -91,7 +93,7 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if(gameObject!=null)
+        if(attackPoint!=null)
             Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }
