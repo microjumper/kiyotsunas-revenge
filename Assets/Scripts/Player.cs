@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    public AudioClip bladeClip;
     public Transform attackPoint;
     public LayerMask enemyLayers;
     public float attackRange = 1.25f;
@@ -14,7 +15,7 @@ public class Player : MonoBehaviour
     private AudioSource audioSource;
 
     private readonly float speed = 8f;
-    private readonly float attackRate = 0.25f;
+    private readonly float attackRate = 0.3f;
 
     private bool canAttack = true;
     private Vector2 inputDirection = Vector2.zero;
@@ -64,13 +65,18 @@ public class Player : MonoBehaviour
     {
         if(canAttack)
         {
-            Attack();
             canAttack = false;
+
+            Attack();
         }
     }
 
     private void Attack()
     {
+        audioSource.Stop();
+        audioSource.clip = bladeClip;
+        audioSource.Play();
+
         animator.SetTrigger("Attack");
 
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
