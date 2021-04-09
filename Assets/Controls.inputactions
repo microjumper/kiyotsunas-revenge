@@ -7,9 +7,9 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "60c57dae-5e10-4d96-881f-ac912f293709",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 },
@@ -26,7 +26,7 @@
                 {
                     "name": "WASD",
                     "id": "2f10ed90-e309-4cad-8f67-12d032dd647b",
-                    "path": "2DVector(mode=1)",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
