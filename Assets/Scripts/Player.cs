@@ -5,14 +5,14 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public LayerMask enemyLayers;
     public Transform attackPoint;
+    public LayerMask enemyLayers;
+    public float attackRange = 1.25f;
 
     private new Rigidbody2D rigidbody;
     private Animator animator;
     private AudioSource audioSource;
 
-    private readonly float attackRange = 1.25f;
     private readonly float speed = 8f;
     private readonly float attackRate = 0.25f;
 
@@ -26,14 +26,12 @@ public class Player : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         transform.position = new Vector2(Mathf.Clamp(transform.position.x, Constraint.LEFT, Constraint.RIGHT), Mathf.Clamp(transform.position.y, Constraint.BOTTOM, Constraint.TOP));
     }
