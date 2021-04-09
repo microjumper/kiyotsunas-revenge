@@ -55,7 +55,8 @@ public class Player : MonoBehaviour
         if (inputDirection.x < 0)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
-        } else
+        }
+        if (inputDirection.x > 0)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
         }
