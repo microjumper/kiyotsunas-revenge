@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private Animator animator;
 
     private readonly float attackRange = 1.25f;
-    private readonly float speed = 5f;
+    private readonly float speed = 8f;
     private readonly float attackRate = 0.25f;
 
     private bool canAttack = true;
@@ -49,6 +49,14 @@ public class Player : MonoBehaviour
     public void OnMove(InputValue value)
     {
         inputDirection = value.Get<Vector2>();
+
+        if (inputDirection.x < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        } else
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     public void OnAttack()
@@ -74,6 +82,11 @@ public class Player : MonoBehaviour
     {
         yield return new WaitForSeconds(attackRate);
         canAttack = true;
+    }
+
+    public void TakeHit(int damage)
+    {
+        animator.SetTrigger("TakeHit");
     }
 
     private void OnDrawGizmosSelected()
