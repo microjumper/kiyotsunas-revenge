@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     private new Rigidbody2D rigidbody;
     private Animator animator;
+    private AudioSource audioSource;
 
     private readonly float attackRange = 1.25f;
     private readonly float speed = 8f;
@@ -21,7 +22,8 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update

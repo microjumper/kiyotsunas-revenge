@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        health = 40;
+        health = 80;
     }
 
     private void Awake()
@@ -32,19 +32,22 @@ public class Enemy : MonoBehaviour
 
     public void TakeHit(int damage)
     {
-        animator.SetTrigger("TakeHit");
-
-        health -= damage;
-
-        if (health <= 0)
+        if(health > 0)
         {
-            Die();
+            animator.SetTrigger("TakeHit");
+
+            health -= damage;
+
+            if (health <= 0)
+            {
+                Die();
+            }
         }
     }
 
     private void Die()
     {
-        animator.SetTrigger("Die");
+        animator.SetBool("Died", true);
 
         StartCoroutine(DisableGameObject());
     }
