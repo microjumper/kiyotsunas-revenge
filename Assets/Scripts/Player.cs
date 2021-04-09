@@ -81,7 +81,7 @@ public class Player : MonoBehaviour
 
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         System.Array.ForEach(enemies, enemy => {
-            enemy.GetComponent<Skeleton>().TakeHit(10);
+            enemy.GetComponent<IDamageable>().TakeDamage(10);
         });
 
         StartCoroutine(Cooldown());

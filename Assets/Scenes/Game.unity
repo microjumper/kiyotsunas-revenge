@@ -123,6 +123,36 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &91675319
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 91675320}
+  m_Layer: 6
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &91675320
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91675319}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1022658399}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &225538720
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 718881317}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: AttackPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -291,7 +321,7 @@ GameObject:
   - component: {fileID: 1022658399}
   - component: {fileID: 1022658398}
   - component: {fileID: 1022658400}
-  - component: {fileID: 1022658401}
+  - component: {fileID: 1022658402}
   - component: {fileID: 1022658397}
   m_Layer: 6
   m_Name: Skeleton
@@ -381,7 +411,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 91675320}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -411,7 +442,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.75, y: 2.5}
   m_EdgeRadius: 0
---- !u!114 &1022658401
+--- !u!114 &1022658402
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -420,9 +451,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1022658396}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40da0ecc80bccfa44851459342ca585c, type: 3}
+  m_Script: {fileID: 11500000, guid: cd2d15a9920bcf74aa5a4f5c50371c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageableLayerMasks:
+    serializedVersion: 2
+    m_Bits: 128
+  attackPoint: {fileID: 91675320}
+  attackRange: 2
+  enemy: {fileID: 11400000, guid: 36b08e4e420d2174fb77b48c6ca4346a, type: 2}
 --- !u!1 &1426819425
 GameObject:
   m_ObjectHideFlags: 0
@@ -439,7 +476,7 @@ GameObject:
   - component: {fileID: 1426819431}
   - component: {fileID: 1426819426}
   - component: {fileID: 1426819433}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
