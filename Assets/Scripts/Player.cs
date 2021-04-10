@@ -16,8 +16,11 @@ public class Player : MonoBehaviour, IDamageable
     private Animator animator;
     private AudioSource audioSource;
 
+    private readonly int attack = 10;
     private readonly float speed = 8f;
     private readonly float attackRate = 0.3f;
+    private int health = 80;
+    private bool isTakingDamage = false;
 
     private bool canAttack = true;
     private Vector2 inputDirection = Vector2.zero;
@@ -29,47 +32,53 @@ public class Player : MonoBehaviour, IDamageable
         audioSource = GetComponent<AudioSource>();
     }
 
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
-        transform.position = new Vector2(Mathf.Clamp(transform.position.x, Constraint.LEFT, Constraint.RIGHT), Mathf.Clamp(transform.position.y, Constraint.BOTTOM, Constraint.TOP));
+        if (!GameManager.IsGameOver)
+        {
+            transform.position = new Vector2(Mathf.Clamp(transform.position.x, Constraint.LEFT, Constraint.RIGHT), 
+                Mathf.Clamp(transform.position.y, Constraint.BOTTOM, Constraint.TOP));
+        }
     }
 
     private void FixedUpdate()
     {
-        if(canAttack)
+        if (!GameManager.IsGameOver)
         {
-            animator.SetBool("Running", !inputDirection.Equals(Vector2.zero));
-
-            rigidbody.MovePosition((Vector2)transform.position + inputDirection * speed * Time.fixedDeltaTime);
+            if (canAttack && !isTakingDamage)
+            {
+                animator.SetBool("Running", !inputDirection.Equals(Vector2.zero));
+                rigidbody.MovePosition((Vector2)transform.position + inputDirection * speed * Time.fixedDeltaTime);
+            }
         }
     }
 
     public void OnMove(InputValue value)
     {
-        inputDirection = value.Get<Vector2>();
+        if (!GameManager.IsGameOver)
+        {
+            inputDirection = value.Get<Vector2>();
 
-        if (inputDirection.x < 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 180, 0);
-        }
-        if (inputDirection.x > 0)
-        {
-            transform.rotation = Quaternion.Euler(0, 0, 0);
+            if (inputDirection.x < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+            if (inputDirection.x > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
         }
     }
 
     public void OnAttack()
     {
-        if(canAttack)
+        if (!GameManager.IsGameOver)
         {
-            canAttack = false;
-
-            Attack();
+            if (canAttack && !isTakingDamage)
+            {
+                canAttack = false;
+                Attack();
+            }
         }
     }
 
@@ -81,7 +90,7 @@ public class Player : MonoBehaviour, IDamageable
 
         Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayers);
         System.Array.ForEach(enemies, enemy => {
-            enemy.GetComponent<IDamageable>().TakeDamage(10);
+            enemy.GetComponent<IDamageable>().TakeDamage(attack);
         });
 
         StartCoroutine(Cooldown());
@@ -93,11 +102,37 @@ public class Player : MonoBehaviour, IDamageable
         canAttack = true;
     }
 
+    public void EndTakingDamageAnimation()
+    {
+        isTakingDamage = false;
+    }
+
     public void TakeDamage(int damage)
     {
-        PlayClip(hurtClip);
+        if (!GameManager.IsGameOver)
+        {
+            isTakingDamage = true;
 
-        animator.SetTrigger("TakeHit");
+            PlayClip(hurtClip);
+
+            animator.SetTrigger("TakeHit");
+
+            health -= damage;
+
+            if (health <= 0)
+            {
+                Die();
+            }
+        }
+    }
+
+    private void Die()
+    {
+        GameManager.instance.GameOver();
+
+        animator.SetBool("Died", true);
+
+        StopCoroutine(Cooldown());
     }
 
     private void PlayClip(AudioClip clip)
