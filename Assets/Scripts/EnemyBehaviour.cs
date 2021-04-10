@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyBehaviour: MonoBehaviour, IDamageable
 {
+    public AudioClip hurtClip;
+
     public LayerMask damageableLayerMasks;
 
     public Transform attackPoint;
@@ -12,6 +14,7 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     public Enemy enemy;
 
     private Animator animator;
+    private AudioSource audioSource;
 
     private int health;
     private bool canAttack;
@@ -19,6 +22,7 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -33,6 +37,10 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     {
         if(health > 0)
         {
+            audioSource.Stop();
+            audioSource.clip = hurtClip;
+            audioSource.Play();
+
             animator.SetTrigger("TakeDamage");
 
             health -= damage;
