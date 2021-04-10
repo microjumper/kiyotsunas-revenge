@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBehaviour: MonoBehaviour, IDamageable
 {
     public AudioClip hurtClip;
+    public AudioClip attackClip;
 
     public LayerMask damageableLayerMasks;
 
@@ -16,13 +17,19 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     private Animator animator;
     private AudioSource audioSource;
 
+    private Player player;
+
     private int health;
+
     private bool canAttack;
+    private bool isTakingDamage;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+
+        player = FindObjectOfType<Player>();
     }
 
     private void OnEnable()
@@ -31,17 +38,54 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         {
             health = enemy.Health;
         }
+
+        canAttack = true;
+        isTakingDamage = false;
+    }
+
+    private void Update()
+    {
+        if (health > 0)
+        {
+            bool walking = !TargetInRange()  && canAttack && !isTakingDamage;
+
+            animator.SetBool("Walking", walking);
+
+            if (walking)
+            {
+                if (transform.position.x < player.gameObject.transform.position.x)
+                {
+                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                else
+                {
+                    transform.rotation = Quaternion.Euler(0, 180, 0);
+                }
+
+                transform.position = Vector2.MoveTowards(transform.position, player.gameObject.transform.position, enemy.Speed * Time.deltaTime);
+
+            }
+            else
+            {
+                Attack();
+            }
+        }
+    }
+
+    private bool TargetInRange()
+    {
+        return Vector2.Distance(transform.position, player.gameObject.transform.position) <= 2;
     }
 
     public void TakeDamage(int damage)
     {
         if(health > 0)
         {
-            audioSource.Stop();
-            audioSource.clip = hurtClip;
-            audioSource.Play();
+            PlayClip(hurtClip);
 
             animator.SetTrigger("TakeDamage");
+
+            isTakingDamage = true;
 
             health -= damage;
 
@@ -52,18 +96,41 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         }
     }
 
-    public void Attack()
+    public void HitTarget()
     {
-        if (canAttack)
+        PlayClip(attackClip);
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayerMasks);
+        if(colliders.Length > 0)
         {
-            canAttack = false;
+            System.Array.ForEach(colliders, damageable => 
+            {
+                damageable.GetComponent<IDamageable>().TakeDamage(enemy.Attack);
+            });
+        }
+    }
 
-            animator.SetTrigger("Attack");
+    public void EndTakingDamageAnimation()
+    {
+        isTakingDamage = false;
+    }
 
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayerMasks);
-            System.Array.ForEach(colliders, collider => collider.GetComponent<IDamageable>().TakeDamage(enemy.Attack));
+    private void Attack()
+    {
+        if(health > 0)
+        {
+            if (canAttack && TargetInRange())
+            {
+                canAttack = false;
 
-            StartCoroutine(Cooldown());
+                animator.SetTrigger("Attack");
+
+                StartCoroutine(Cooldown());
+            }
+            else
+            {
+                StopCoroutine(Cooldown());
+            }
         }
     }
 
@@ -71,6 +138,13 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     {
         yield return new WaitForSeconds(enemy.AttackRate);
         canAttack = true;
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     private void Die()
@@ -85,5 +159,11 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         yield return new WaitForSeconds(seconds);
 
         gameObject.SetActive(false);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (attackPoint != null)
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

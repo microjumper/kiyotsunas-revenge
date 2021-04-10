@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
     public AudioClip bladeClip;
+    public AudioClip hurtClip;
+
     public Transform attackPoint;
     public LayerMask enemyLayers;
     public float attackRange = 1.25f;
@@ -73,9 +75,7 @@ public class Player : MonoBehaviour
 
     private void Attack()
     {
-        audioSource.Stop();
-        audioSource.clip = bladeClip;
-        audioSource.Play();
+        PlayClip(bladeClip);
 
         animator.SetTrigger("Attack");
 
@@ -93,9 +93,18 @@ public class Player : MonoBehaviour
         canAttack = true;
     }
 
-    public void TakeHit(int damage)
+    public void TakeDamage(int damage)
     {
+        PlayClip(hurtClip);
+
         animator.SetTrigger("TakeHit");
+    }
+
+    private void PlayClip(AudioClip clip)
+    {
+        audioSource.Stop();
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 
     private void OnDrawGizmosSelected()
