@@ -5,7 +5,6 @@ using UnityEngine;
 public class EnemyBehaviour: MonoBehaviour, IDamageable
 {
     public AudioClip hurtClip;
-    public AudioClip attackClip;
 
     public LayerMask damageableLayerMasks;
 
@@ -98,8 +97,6 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
 
     public void HitTarget()
     {
-        PlayClip(attackClip);
-
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayerMasks);
         if(colliders.Length > 0)
         {
