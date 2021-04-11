@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2284190435450516075}
   - component: {fileID: 2284190435450516052}
   - component: {fileID: 2284190435450516072}
+  - component: {fileID: 1800975472836078824}
   m_Layer: 6
   m_Name: Skeleton
   m_TagString: Enemy
@@ -98,7 +99,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.25, y: 0}
@@ -133,6 +134,7 @@ MonoBehaviour:
   attackPoint: {fileID: 2284190435878186929}
   attackRange: 1
   enemy: {fileID: 11400000, guid: 36b08e4e420d2174fb77b48c6ca4346a, type: 2}
+  isMoving: 0
 --- !u!95 &2284190435450516052
 Animator:
   serializedVersion: 3
@@ -248,6 +250,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!50 &1800975472836078824
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2284190435450516053}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!1 &2284190435878186942
 GameObject:
   m_ObjectHideFlags: 0

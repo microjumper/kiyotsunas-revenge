@@ -21,7 +21,6 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     private Player player;
 
     private int health;
-
     private bool canAttack;
     private bool isTakingDamage;
 
@@ -50,27 +49,32 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         {
             bool targetInRange = TargetInRange(player.gameObject.transform, targetRange);
 
-            if(!isTakingDamage && canAttack)
+            if (targetInRange)
             {
-                if (targetInRange)
-                {
-                    animator.SetBool("Walking", false);
-
-                    Attack();
-                }
-                else
-                {
-                    animator.SetBool("Walking", true);
-
-                    FaceTarget(player.gameObject.transform);
-
-                    ChaseTarget(player.gameObject.transform);
-                }
+                Attack();
+            }
+            else
+            {
+                Move();
             }
         }
     }
 
     #region Movement
+    private void Move()
+    {
+        if(isTakingDamage || !canAttack)
+        {
+            return;
+        }
+
+        FaceTarget(player.gameObject.transform);
+
+        animator.SetBool("Walking", true);
+
+        ChaseTarget(player.gameObject.transform);
+    }
+
     private bool TargetInRange(Transform target, float range)
     {
         return Vector2.Distance(transform.position, target.position) <= range;
@@ -99,6 +103,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     {
         if (canAttack)
         {
+            animator.SetBool("Walking", false);
+
             canAttack = false;
 
             animator.SetTrigger("Attack");
