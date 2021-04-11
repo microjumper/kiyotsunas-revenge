@@ -5,16 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    public AudioClip bladeClip;
-    public AudioClip hurtClip;
-
     public Transform attackPoint;
     public LayerMask enemyLayers;
     public float attackRange = 1.25f;
 
     private new Rigidbody2D rigidbody;
     private Animator animator;
-    private AudioSource audioSource;
 
     private readonly int attack = 10;
     private readonly float speed = 8f;
@@ -29,7 +25,6 @@ public class Player : MonoBehaviour, IDamageable
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -84,7 +79,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Attack()
     {
-        PlayClip(bladeClip);
+        AudioManager.instance.PlayPlayerAttack();
 
         animator.SetTrigger("Attack");
 
@@ -113,7 +108,7 @@ public class Player : MonoBehaviour, IDamageable
         {
             isTakingDamage = true;
 
-            PlayClip(hurtClip);
+            AudioManager.instance.PlayPlayerHurt();
 
             animator.SetTrigger("TakeHit");
 
@@ -133,13 +128,6 @@ public class Player : MonoBehaviour, IDamageable
         animator.SetBool("Died", true);
 
         StopCoroutine(Cooldown());
-    }
-
-    private void PlayClip(AudioClip clip)
-    {
-        audioSource.Stop();
-        audioSource.clip = clip;
-        audioSource.Play();
     }
 
     private void OnDrawGizmosSelected()
