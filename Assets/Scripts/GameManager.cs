@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Text scoreText;
+
     public Spawner[] spawners;
 
     public static GameManager instance;
@@ -22,6 +25,18 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+    }
+
+    private void Start()
+    {
+        score = 0;
+        UpdateScore(score);
+    }
+
+    public void UpdateScore(int points)
+    {
+        score += points;
+        scoreText.text = $"SCORE:{score}";
     }
 
     public void GameOver()

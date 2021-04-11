@@ -159,6 +159,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         animator.SetBool("Died", true);
 
         StartCoroutine(DisableGameObject(1.5f));
+
+        GameManager.instance.UpdateScore(enemy.Points);
     }
 
     private IEnumerator DisableGameObject(float seconds)

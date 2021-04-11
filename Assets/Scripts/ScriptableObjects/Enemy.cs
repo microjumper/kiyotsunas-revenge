@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Enemy", menuName = "Enemy")]
 public class Enemy : ScriptableObject
 {
+    [SerializeField]
+    private int points;
+    public int Points { get { return points; } }
+
     [SerializeField]
     private int health;
     public int Health {get { return health; } }

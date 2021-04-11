@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39de697992f0a7e4d8cf05379c140ab4, type: 3}
   m_Name: Skeleton
   m_EditorClassIdentifier: 
+  points: 5
   health: 40
   attack: 10
   attackRate: 1
