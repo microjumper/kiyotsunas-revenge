@@ -9,6 +9,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     public Transform attackPoint;
     public float attackRange;
 
+    public Healthbar healthbar;
+
     public Enemy enemy;
 
     private readonly float targetRange = 2f;    // enemy reaches the target if it's in this range
@@ -30,7 +32,10 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
 
     private void OnEnable()
     {
-        if(enemy)
+        healthbar.SetMaxHealth(enemy.Health);
+        healthbar.gameObject.SetActive(true);
+
+        if (enemy)
         {
             health = enemy.Health;
         }
@@ -142,6 +147,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
 
             health -= damage;
 
+            healthbar.SetHealth(health);
+
             if (health <= 0)
             {
                 Die();
@@ -157,6 +164,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     private void Die()
     {
         animator.SetBool("Died", true);
+
+        healthbar.gameObject.SetActive(false);
 
         StartCoroutine(DisableGameObject(1.5f));
 
