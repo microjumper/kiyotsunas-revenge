@@ -13,6 +13,8 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
 
     public Enemy enemy;
 
+    private readonly float targetRange = 2f;    // enemy reaches the target if it's in this range
+
     private Animator animator;
     private AudioSource audioSource;
 
@@ -46,35 +48,85 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     {
         if (health > 0)
         {
-            bool walking = !TargetInRange()  && canAttack && !isTakingDamage;
+            bool targetInRange = TargetInRange(player.gameObject.transform, targetRange);
 
-            animator.SetBool("Walking", walking);
-
-            if (walking)
+            if(!isTakingDamage && canAttack)
             {
-                if (transform.position.x < player.gameObject.transform.position.x)
+                if (targetInRange)
                 {
-                    transform.rotation = Quaternion.Euler(0, 0, 0);
+                    animator.SetBool("Walking", false);
+
+                    Attack();
                 }
                 else
                 {
-                    transform.rotation = Quaternion.Euler(0, 180, 0);
+                    animator.SetBool("Walking", true);
+
+                    FaceTarget(player.gameObject.transform);
+
+                    ChaseTarget(player.gameObject.transform);
                 }
-
-                transform.position = Vector2.MoveTowards(transform.position, player.gameObject.transform.position, enemy.Speed * Time.deltaTime);
-
-            }
-            else
-            {
-                Attack();
             }
         }
     }
 
-    private bool TargetInRange()
+    #region Movement
+    private bool TargetInRange(Transform target, float range)
     {
-        return Vector2.Distance(transform.position, player.gameObject.transform.position) <= 2;
+        return Vector2.Distance(transform.position, target.position) <= range;
     }
+
+    private void FaceTarget(Transform target)
+    {
+        if (transform.position.x < target.position.x)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+    }
+
+    private void ChaseTarget(Transform target)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, target.position, enemy.Speed * Time.deltaTime);
+    }
+    #endregion
+
+    #region Attack
+    private void Attack()
+    {
+        if (canAttack)
+        {
+            canAttack = false;
+
+            animator.SetTrigger("Attack");
+
+            StartCoroutine(Cooldown());
+        }
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(enemy.AttackRate);
+
+        canAttack = true;
+    }
+
+    public void HitTarget() // controlled by enemy's animation event
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayerMasks);
+
+        if (colliders.Length > 0)
+        {
+            System.Array.ForEach(colliders, damageable =>
+            {
+                damageable.GetComponent<IDamageable>().TakeDamage(enemy.Attack);
+            });
+        }
+    }
+    #endregion
 
     public void TakeDamage(int damage)
     {
@@ -95,47 +147,11 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         }
     }
 
-    public void HitTarget()
-    {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, damageableLayerMasks);
-        if(colliders.Length > 0)
-        {
-            System.Array.ForEach(colliders, damageable => 
-            {
-                damageable.GetComponent<IDamageable>().TakeDamage(enemy.Attack);
-            });
-        }
-    }
-
     public void EndTakingDamageAnimation()
     {
         isTakingDamage = false;
     }
 
-    private void Attack()
-    {
-        if(health > 0)
-        {
-            if (canAttack && TargetInRange())
-            {
-                canAttack = false;
-
-                animator.SetTrigger("Attack");
-
-                StartCoroutine(Cooldown());
-            }
-            else
-            {
-                StopCoroutine(Cooldown());
-            }
-        }
-    }
-
-    private IEnumerator Cooldown()
-    {
-        yield return new WaitForSeconds(enemy.AttackRate);
-        canAttack = true;
-    }
 
     private void PlayClip(AudioClip clip)
     {
