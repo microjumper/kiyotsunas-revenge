@@ -9,6 +9,8 @@ public class Player : MonoBehaviour, IDamageable
     public LayerMask enemyLayers;
     public float attackRange = 1.25f;
 
+    public Healthbar healthbar;
+
     private new Rigidbody2D rigidbody;
     private Animator animator;
 
@@ -25,6 +27,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        healthbar.SetMaxHealth(health);
     }
 
     private void Update()
@@ -113,6 +120,8 @@ public class Player : MonoBehaviour, IDamageable
             animator.SetTrigger("TakeHit");
 
             health -= damage;
+
+            healthbar.SetHealth(health);
 
             if (health <= 0)
             {
