@@ -99,8 +99,6 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
     {
         if (canAttack)
         {
-            animator.SetBool("Walking", false);
-
             canAttack = false;
 
             animator.SetTrigger("Attack");
