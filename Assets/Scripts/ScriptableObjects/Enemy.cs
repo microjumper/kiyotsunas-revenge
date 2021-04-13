@@ -20,6 +20,10 @@ public class Enemy : ScriptableObject
     public int AttackRate { get { return attackRate; } }
 
     [SerializeField]
+    private int attackRange;
+    public int AttackRange { get { return attackRange; } }
+
+    [SerializeField]
     private int speed;
     public int Speed { get { return speed; } }
 }

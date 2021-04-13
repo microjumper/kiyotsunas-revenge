@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, IDamageable
     private Animator animator;
 
     private readonly int attack = 10;
-    private readonly float speed = 8f;
+    private readonly float speed = 7f;
     private readonly float attackRate = 0.3f;
     private int health = 80;
     private bool isTakingDamage = false;
