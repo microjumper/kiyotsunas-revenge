@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public AudioManager audioManager;
     public Text scoreText;
+    public GameObject gameOverPanel;
 
     public Spawner[] spawners;
 
@@ -41,8 +44,19 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        audioManager.music.pitch = 0.5f;
+        Time.timeScale = 0.5f;
         IsGameOver = true;
+        gameOverPanel.SetActive(true);
 
         System.Array.ForEach(spawners, spawner => spawner.CancelInvoke());
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene("Game");
+        IsGameOver = false;
+        audioManager.music.pitch =1;
+        Time.timeScale = 1;
     }
 }

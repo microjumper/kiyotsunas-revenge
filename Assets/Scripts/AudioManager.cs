@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    public AudioSource music;
     public AudioSource playerAttack;
     public AudioSource playerHurt;
 

@@ -83,11 +83,6 @@ public class EnemyBehaviour: MonoBehaviour, IDamageable
         }
     }
 
-    public void EndTakingDamageAnimation()
-    {
-
-    }
-
     private void Die()
     {
         animator.SetBool("Died", true);
