@@ -1953,7 +1953,7 @@ MonoBehaviour:
   - {fileID: 394154939}
   - {fileID: 1505104397}
   time: 0
-  repeatRate: 5
+  repeatRate: 3
 --- !u!1 &1578546760
 GameObject:
   m_ObjectHideFlags: 0
