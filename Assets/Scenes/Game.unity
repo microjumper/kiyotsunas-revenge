@@ -434,7 +434,7 @@ MonoBehaviour:
   - {fileID: 109188246}
   - {fileID: 851646558}
   time: 0
-  repeatRate: 5
+  repeatRate: 4
 --- !u!4 &523155051
 Transform:
   m_ObjectHideFlags: 0
@@ -1846,7 +1846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.81568635, g: 0.07058824, b: 0.14117648, a: 0.7058824}
+  m_Color: {r: 0.81568635, g: 0.07058824, b: 0.14117648, a: 0.78431374}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1953,7 +1953,7 @@ MonoBehaviour:
   - {fileID: 394154939}
   - {fileID: 1505104397}
   time: 0
-  repeatRate: 3
+  repeatRate: 2
 --- !u!1 &1578546760
 GameObject:
   m_ObjectHideFlags: 0

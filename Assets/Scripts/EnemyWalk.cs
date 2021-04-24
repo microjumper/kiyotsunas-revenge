@@ -23,14 +23,22 @@ public class EnemyWalk : StateMachineBehaviour
         }
         else
         {
+            CheckDistanceFromOtherEnemies(animator.gameObject);
             Move();
+
+            animator.gameObject.transform.position = new Vector2(animator.gameObject.transform.position.x, Mathf.Clamp(animator.gameObject.transform.position.y, Constraint.BOTTOM, Constraint.TOP));
+
+            if (GameManager.IsGameOver)
+            {
+                animator.SetBool("Walking", false);
+            }
         }
     }
 
     //  OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        animator.SetBool("Walking", false);
     }
 
     #region Movement
@@ -38,6 +46,23 @@ public class EnemyWalk : StateMachineBehaviour
     {
         FaceTarget(player.gameObject.transform);
         ChaseTarget(player.gameObject.transform);
+    }
+
+    private void CheckDistanceFromOtherEnemies(GameObject current)
+    {
+        EnemyBehaviour[] enemies = FindObjectsOfType<EnemyBehaviour>();
+        System.Array.ForEach(enemies, enemy =>
+        {
+            GameObject go = enemy.gameObject;
+            if(go != current)
+            {
+                if (Vector2.Distance(go.transform.position, current.transform.position) < 1)
+                {
+                    Vector2 direction = current.transform.position - go.transform.position;
+                    current.gameObject.transform.Translate(direction * Time.deltaTime);
+                }
+            }
+        });
     }
 
     private bool TargetInRange(Transform target, float range)
