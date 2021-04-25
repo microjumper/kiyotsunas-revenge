@@ -855,6 +855,7 @@ GameObject:
   - component: {fileID: 968405540}
   - component: {fileID: 968405539}
   - component: {fileID: 968405538}
+  - component: {fileID: 968405541}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -976,6 +977,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 968405536}
   m_CullTransparentMesh: 1
+--- !u!114 &968405541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968405536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 3, y: -6}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1070518877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1805,6 +1821,7 @@ GameObject:
   - component: {fileID: 1485081866}
   - component: {fileID: 1485081868}
   - component: {fileID: 1485081867}
+  - component: {fileID: 1485081869}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
@@ -1871,6 +1888,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1485081865}
   m_CullTransparentMesh: 1
+--- !u!95 &1485081869
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485081865}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b1173e4f9b2e2741b24ba784f26d2a2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1505104396
 GameObject:
   m_ObjectHideFlags: 0
