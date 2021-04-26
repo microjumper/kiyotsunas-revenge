@@ -7,6 +7,7 @@ public class AudioManager : MonoBehaviour
     public AudioSource playerHurt;
 
     public AudioSource enemyHurt;
+    public AudioSource flyingEyeHurt;
 
     public static AudioManager instance;
 
@@ -35,5 +36,10 @@ public class AudioManager : MonoBehaviour
     public void PlayEnemyHurt()
     {
         enemyHurt.Play();
+    }
+
+    public void PlayFlyingEyeHurt()
+    {
+        flyingEyeHurt.Play();
     }
 }
